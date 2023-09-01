@@ -1,29 +1,53 @@
-import { View, Text, StyleSheet } from 'react-native';
+import React, { useState } from 'react';
+import { View, Text, StyleSheet, TouchableHighlight } from 'react-native';
 
 const Square = ({ number }) => {
+  const [isPressed, setIsPressed] = useState(false);
+
+  const handlePress = () => {
+    setIsPressed(!isPressed);
+  };
+
+  const squareStyles = [
+    styles.gridColumn,
+    isPressed && styles.pressedSquare, // Apply pressedSquare style when isPressed is true
+  ];
+
+  const textStyles = [styles.text, isPressed && styles.pressedText];
+
   return (
-    <View style={styles.square}>
-      <Text style={styles.number}>{number}</Text>
-    </View>
-  )
-}
-
-
+    <TouchableHighlight
+      style={squareStyles}
+      onPress={isPressed ? null : handlePress}
+      underlayColor="teal" // To disable the default highlight effect
+    >
+      <Text style={textStyles}>${number}</Text>
+    </TouchableHighlight>
+  );
+};
 
 const styles = StyleSheet.create({
-  square: {
+  gridColumn: {
+    flex: 1,
+    backgroundColor: 'white',
+    // margin: 1,
+    // paddingVertical: 10,
+    borderColor: 'teal',
+    borderWidth: 1,
+    alignItems: 'center',
+    justifyContent: 'center',
     width: 50,
     height: 50,
-    backgroundColor: 'teal',
-    color: 'white',
-    margin: 5,
-    justifyContent: 'center',
-    alignItems: 'center',
   },
-  number: {
-    fontSize: 18,
+  pressedSquare: {
+    backgroundColor: 'teal', // Change the background color when pressed -see underlayColor in TouchableHighlight
+  },
+  text: {
+    color: 'teal',
+  },
+  pressedText: {
     color: 'white',
   },
 });
 
-export default Square
+export default Square;
