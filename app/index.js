@@ -1,9 +1,12 @@
 import React, { useState } from 'react';
-import { View, StyleSheet } from 'react-native';
+import { View, SafeAreaView, ScrollView, StyleSheet } from 'react-native';
+import { Stack, useRouter } from 'expo-router'
+
 import GridRow from '../components/GridRow';
 import CreateBoardForm from '../components/CreateBoardForm';
 
 const App = () => {
+  const router = useRouter();
   const [boardConfig, setBoardConfig] = useState(null);
 
   const handleCreateBoard = (numSquares) => {
@@ -25,11 +28,13 @@ const App = () => {
 
       for (let col = 1; col <= 7; col++) {
         const squareNumber = row * 7 + col;
+
         if (squareNumber <= numSquares) {
           rowNumbers.push(squareNumber);
         } else {
           rowNumbers.push('Any'); // Add "Any" for the extra squares
         }
+
       }
 
       rows.push(
@@ -41,26 +46,54 @@ const App = () => {
   };
 
   return (
-    <View style={styles.container}>
-      <CreateBoardForm onCreateBoard={handleCreateBoard} />
-      <View style={styles.gridContainer}>
-        {renderRows()}
-      </View>
-    </View>
+    <SafeAreaView >
+      <Stack.Screen
+      options={{
+        headerStyle: { backgroundColor: 'white' },
+        headerShadowVisible: false,
+        headerTitle: ' ❤️ Donation Cards',
+      }}
+      />
+
+      <ScrollView>
+        <View style={styles.container}>
+
+          <CreateBoardForm onCreateBoard={handleCreateBoard} />
+
+          <View style={styles.gridContainer}>{renderRows()}</View>
+
+        </View>
+      </ScrollView>
+
+    </SafeAreaView>
   );
 };
 
 const styles = StyleSheet.create({
   container: {
-    flex: 1,
-    padding: 20,
+    paddingHorizontal: 10,
+    paddingVertical: 20,
+    // flex: 1,
+    height: '100vh',
+    width: '100%',
+    // justifyContent: 'center',
+    alignItems: 'center',
   },
   gridContainer: {
+    width: '100%',
+    maxWidth: '500px',
     flexDirection: 'column',
     borderWidth: 1,
     borderColor: 'teal',
     // padding: 5,
+    
   },
+  pink: {
+    backgroundColor: 'pink',
+  },
+  purple: {
+    backgroundColor: 'purple',
+  }
 });
 
 export default App;
